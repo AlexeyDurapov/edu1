@@ -1,0 +1,7 @@
+{
+  "leaf": false,
+  "children": [
+    { "text": "About", "iconCls": "x-fa fa-home", "xtype": "homeview", "leaf": true },
+    { "text": "Пользователи", "iconCls": "x-fa fa-table", "xtype": "usersview","leaf": true }
+  ]
+}

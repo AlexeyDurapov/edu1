@@ -1,0 +1,28 @@
+<?php
+/**
+ * Local configuration.
+ *
+ * Copy this file to `local.php` and change its settings as required.
+ * `local.php` is ignored by git and safe to use for local and sensitive data like usernames and passwords.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Settings for DB connections
+ */
+$dsn = 'mysql:dbname=testextjs;host=localhost;charset=utf8mb4';
+$dbuser = 'admin';
+$dbpass = '147258';
+
+return [
+    'db' => [
+        'driver'    => 'Pdo',
+        'dsn'       => $dsn,
+        'username'  => $dbuser,
+        'password'  => $dbpass,
+        'options'   => [
+            PDO::ATTR_ERRMODE=> PDO::ERRMODE_EXCEPTION,
+        ]
+    ],
+];
