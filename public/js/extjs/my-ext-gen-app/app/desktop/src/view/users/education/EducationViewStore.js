@@ -1,10 +1,10 @@
-Ext.define('MyExtGenApp.view.users.EducationViewStore', {
+Ext.define('MyExtGenApp.view.users.education.EducationViewStore', {
     extend: 'Ext.data.Store',
-    alias: 'store.educationviewstore',
+    alias: 'store.eduviewstore',
 
     fields: [ 'id', 'name'],
 
-    pageSize: 500,
+    pageSize: 100,
     autoLoad: true,
 
     proxy: {

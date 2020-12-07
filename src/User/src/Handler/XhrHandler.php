@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace User\Handler;
 
-use phpDocumentor\Reflection\Types\This;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use User\Model\CitiesRepositoryInterface;
 use User\Model\EducationRepositoryInterface;
 use User\Model\UserRepositoryInterface;
 use Zend\Diactoros\Response\JsonResponse;
-use Zend\Expressive\Helper\UrlHelper;
 
 class XhrHandler implements RequestHandlerInterface
 {
     const ACTION_ALL_USERS      = 'allusers';
     const ACTION_UPDATE_USER    = 'userupdate';
     const ACTION_EDUCATION      = 'education';
+    const ACTION_SITIES         = 'cities';
 
     /**
      * @var UserRepositoryInterface
@@ -28,9 +28,9 @@ class XhrHandler implements RequestHandlerInterface
      */
     private $educationRepository;
     /**
-     * @var UrlHelper
+     * @var CitiesRepositoryInterface
      */
-    private $urlHelper;
+    private $citiesRepository;
     /**
      * @var int|mixed
      */
@@ -43,11 +43,11 @@ class XhrHandler implements RequestHandlerInterface
     public function __construct(
         UserRepositoryInterface  $userRepository,
         EducationRepositoryInterface $educationRepository,
-        UrlHelper $urlHelper
+        CitiesRepositoryInterface $citiesRepository
     ) {
         $this->userRepository       = $userRepository;
         $this->educationRepository  = $educationRepository;
-        $this->urlHelper            = $urlHelper;
+        $this->citiesRepository     = $citiesRepository;
     }
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
@@ -65,11 +65,15 @@ class XhrHandler implements RequestHandlerInterface
 
         switch ($action) {
             case self::ACTION_ALL_USERS:
-                $response = $this->allUsersAction($data);
+                $response = $this->allUsersAction();
                 break;
 
             case self::ACTION_EDUCATION:
                 $response = $this->getEducationList();
+                break;
+
+            case self::ACTION_SITIES:
+                $response = $this->getSitiesList();
                 break;
 
             case self::ACTION_UPDATE_USER:
@@ -89,7 +93,7 @@ class XhrHandler implements RequestHandlerInterface
      * @param array|null $data
      * @return array
      */
-    private function allUsersAction(?array $data)
+    private function allUsersAction()
     {
         return $this->userRepository->getUsersJson(
             (int) $this->page,
@@ -103,6 +107,14 @@ class XhrHandler implements RequestHandlerInterface
     private function getEducationList()
     {
         return $this->educationRepository->getEducationJson();
+    }
+
+    /**
+     * @return bool[]
+     */
+    private function getSitiesList()
+    {
+        return $this->citiesRepository->getCitiesJson();
     }
 
     /**

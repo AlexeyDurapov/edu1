@@ -6,6 +6,9 @@ namespace User;
 
 use User\Handler\XhrHandler;
 use User\Handler\XhrHandlerFactory;
+use User\Model\CitiesRepository;
+use User\Model\CitiesRepositoryFactory;
+use User\Model\CitiesRepositoryInterface;
 use User\Model\EducationRepository;
 use User\Model\EducationRepositoryFactory;
 use User\Model\EducationRepositoryInterface;
@@ -44,14 +47,16 @@ class ConfigProvider
             'invokables' => [
             ],
             'factories'  => [
-                XhrHandler::class => XhrHandlerFactory::class,
+                XhrHandler::class           => XhrHandlerFactory::class,
 
-                UserRepository::class => UserRepositoryFactory::class,
-                EducationRepository::class => EducationRepositoryFactory::class,
+                UserRepository::class       => UserRepositoryFactory::class,
+                EducationRepository::class  => EducationRepositoryFactory::class,
+                CitiesRepository::class     => CitiesRepositoryFactory::class,
             ],
             'aliases' => [
-                UserRepositoryInterface::class => UserRepository::class,
+                UserRepositoryInterface::class      => UserRepository::class,
                 EducationRepositoryInterface::class => EducationRepository::class,
+                CitiesRepositoryInterface::class    => CitiesRepository::class,
             ],
         ];
     }

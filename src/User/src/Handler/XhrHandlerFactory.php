@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace User\Handler;
 
 use Psr\Container\ContainerInterface;
+use User\Model\CitiesRepositoryInterface;
 use User\Model\EducationRepositoryInterface;
 use User\Model\UserRepositoryInterface;
-use Zend\Expressive\Helper\UrlHelper;
 
 class XhrHandlerFactory
 {
@@ -16,7 +16,7 @@ class XhrHandlerFactory
         return new XhrHandler(
             $container->get(UserRepositoryInterface::class),
             $container->get(EducationRepositoryInterface::class),
-            $container->get(UrlHelper::class)
+            $container->get(CitiesRepositoryInterface::class)
         );
     }
 }

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace User\Model;
 
+use stdClass;
+use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\Sql\Join;
 use Zend\Db\Sql\Predicate;
+use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Paginator\Paginator;
 
@@ -13,8 +16,8 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 {
     const TABLE_NAME            = 'users';
     const TABLE_EDUCATION_NAME  = 'education';
-    const TABLE_CITIES_NAME     = 'sities';
-    const TABLE_USER_CITY_NAME  = 'user_sity';
+    const TABLE_CITIES_NAME     = 'cities';
+    const TABLE_USER_CITY_NAME  = 'user_city';
     const TABLE_ORDER_DEFAULT   = 'id ASC';
     const COUNT_PER_PAGE        = 25;
 
@@ -65,10 +68,10 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
     }
 
     /**
-     * @param \Zend\Db\Sql\Select $select
-     * @return \Zend\Db\Sql\Select
+     * @param Select $select
+     * @return Select
      */
-    private function allUserInfoSelect(\Zend\Db\Sql\Select $select)
+    private function allUserInfoSelect(Select $select): Select
     {
         $select->columns([
             'id',
@@ -91,9 +94,9 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
         );
         $select->join(
             self::TABLE_CITIES_NAME,
-            new Predicate\Expression(self::TABLE_USER_CITY_NAME. '.sity_id'.'='. self::TABLE_CITIES_NAME . '.id'),
+            new Predicate\Expression(self::TABLE_USER_CITY_NAME. '.city_id'.'='. self::TABLE_CITIES_NAME . '.id'),
             [
-                'sities' => new Predicate\Expression("GROUP_CONCAT(`sities`.`name` SEPARATOR ', ')")
+                'cities' => new Predicate\Expression("GROUP_CONCAT(`cities`.`name` SEPARATOR ', ')")
             ],
             Join::JOIN_LEFT
         );
@@ -121,7 +124,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
                 'name'      => $item->getName(),
                 'eduid'     => $item->getEduId(),
                 'education' => $item->getEducation(),
-                'sities'    => $item->getSities(),
+                'cities'    => $item->getCities(),
                 ];
         }
 
@@ -152,11 +155,11 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 
     /**
      * @param $newUserData
-     * @return false|\Zend\Db\Adapter\Driver\ResultInterface
+     * @return false|ResultInterface
      */
     private function updateUserInfo($newUserData)
     {
-        if ($newUserData instanceof \stdClass) {
+        if ($newUserData instanceof stdClass) {
             if (($newUserData->eduid ?? false) && ($newUserData->id ?? false)) {
                 return $this->saveItem(
                     [
@@ -164,9 +167,8 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
                     ],
                     $newUserData->id
                 );
-            } else {
-                return $this->successResponse = false;
             }
         }
+        return $this->successResponse = false;
     }
 }

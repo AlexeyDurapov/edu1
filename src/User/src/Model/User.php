@@ -13,7 +13,7 @@ class User
     private $name;
     private $eduid;
     private $education;
-    private $sities;
+    private $cities;
 
     /**
      * @return mixed
@@ -50,9 +50,9 @@ class User
     /**
      * @return mixed
      */
-    public function getSities()
+    public function getCities()
     {
-        return $this->sities;
+        return $this->cities;
     }
 
 }

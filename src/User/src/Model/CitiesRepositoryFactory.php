@@ -8,15 +8,15 @@ use Psr\Container\ContainerInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Hydrator\ReflectionHydrator;
 
-class EducationRepositoryFactory
+class CitiesRepositoryFactory
 {
-    public function __invoke(ContainerInterface $container) : EducationRepository
+    public function __invoke(ContainerInterface $container) : CitiesRepository
     {
-        return new EducationRepository(
+        return new CitiesRepository(
             $container->get(AdapterInterface::class),
-            EducationRepository::TABLE_NAME,
+            CitiesRepository::TABLE_NAME,
             new ReflectionHydrator(),
-            new Education()
+            new City()
         );
     }
 }

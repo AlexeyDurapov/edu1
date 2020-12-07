@@ -10,13 +10,28 @@ Ext.define('MyExtGenApp.view.users.UsersViewController', {
         grid.getStore().sync();
     },
 
-    // onEducationFilterChange: function (field, value) {
-    //     var store = this.getView().getStore()
-    //     store.clearFilter();
-    //     store.filterBy(function (e) {
-    //         console.log(e);
-    //         return e.data.education == value;
-    //     });
-    // },
+    updateUserGridFilter: function () {
+        const store = this.lookup('mainUsersGrid').getStore();
+        let educationArray = Array(),
+            citiesArray = Array();
+
+        store.clearFilter();
+
+        this.lookup('educationFilter').getSelections().forEach(e => {
+            educationArray.push(e.getData().id);
+        });
+
+        this.lookup('citiesFilter').getSelections().forEach(e => {
+            citiesArray.push(e.getData().name);
+        });
+
+        store.filterBy(function (item) {
+            let isEducationFound = educationArray.includes(item.getData().eduid) | educationArray.length === 0,
+                isCityFound = citiesArray.some(function (city) {
+                    return item.getData().cities.indexOf(city) !== -1;
+                }) | citiesArray.length === 0;
+            return !!(isEducationFound & isCityFound);
+        });
+    }
 
 });
